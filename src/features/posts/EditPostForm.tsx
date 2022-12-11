@@ -26,7 +26,7 @@ export const EditPostForm = ({match} : RouteComponentProps<Param>) => {
 
     const onSavePostClicked: React.MouseEventHandler<HTMLButtonElement> = () => {
         if (title && content) {
-            dispatch(postUpdated({id: postId, title, content}))
+            dispatch(postUpdated({id: postId, title, content, user:"", date:""})) // FIXME 
             history.push(`/posts/${postId}`)
         }
     }

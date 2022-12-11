@@ -1,10 +1,13 @@
 import { createSlice, nanoid, PayloadAction } from "@reduxjs/toolkit";
+import { sub } from "date-fns";
 import { RootStateType } from "../../app/store";
 
 export interface Post {
     id: string;
     title: string;
     content: string;
+    user: string
+    date: string
 }
 
 export interface Param {
@@ -12,8 +15,19 @@ export interface Param {
 }
 
 const initialState: Post[] = [
-    {id: '1', title: 'First Post!', content: 'Hello!' },
-    { id: '2', title: 'Second Post', content: 'More text' }
+    {
+        id: '1', 
+        title: 'First Post!', 
+        content: 'Hello!', 
+        user: "",
+        date: sub(new Date(), { minutes: 10 }).toISOString() },
+    { 
+        id: '2', 
+        title: 'Second Post', 
+        content: 'More text', 
+        user: "",
+        date: sub(new Date(), { minutes: 5 }).toISOString() 
+    }
 ]
 
 export const postSlice = createSlice({
@@ -24,12 +38,14 @@ export const postSlice = createSlice({
             reducer: (state, action: PayloadAction<Post>) => {
                 state.push(action.payload)
             },
-            prepare: (title, content) => {
+            prepare: (title, content, userId) => {
                 return {
                     payload: {
                         id: nanoid(),
+                        date: new Date().toISOString(),
                         title,
-                        content
+                        content,
+                        user: userId
                     }
                 }
             }
