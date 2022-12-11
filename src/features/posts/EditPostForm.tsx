@@ -3,16 +3,14 @@ import { useHistory } from "react-router-dom";
 import { RouteComponentProps } from "react-router-dom";
 
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
-import { postUpdated } from "./postSlice";
+import { postUpdated, selectPostByIdFunc } from "./postSlice";
 import { Param } from "./postSlice";
 
 
 export const EditPostForm = ({match} : RouteComponentProps<Param>) => {
     const postId = match.params.postId
 
-    const post = useAppSelector(state => state.posts.find(
-        p => p.id === postId
-    ))
+    const post = useAppSelector(state => selectPostByIdFunc(state, postId))
 
     const [title, setTitle] = useState(post?.title)
     const [content, setContent] = useState(post?.content)

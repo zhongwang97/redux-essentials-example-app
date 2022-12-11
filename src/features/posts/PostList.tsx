@@ -1,14 +1,23 @@
-import React from "react";
+import React, { useEffect } from "react";
 
-import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { PostAuthor } from "./PostAuthors";
-import { selectPostFunc } from "./postSlice"; 
+import { fetchPosts, selectPostFunc } from "./postSlice"; 
 import { TimeAgo } from "./TimeAgo";
 
 export const PostList = () => {
-    const posts = useSelector(selectPostFunc)
-    const orderedPosts = posts.slice().sort(
+    const dispatch = useAppDispatch()
+    const posts = useAppSelector(selectPostFunc)
+    const postStatus = useAppSelector(state => state.posts.status)
+
+    useEffect(() => {
+        if (postStatus === 'idle') {
+            dispatch(fetchPosts())
+        }
+    }, [postStatus, dispatch])
+
+    const orderedPosts = posts.posts.slice().sort(
         (a, b) => b.date.localeCompare(a.date)
     )
 

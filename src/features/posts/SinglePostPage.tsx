@@ -1,14 +1,14 @@
 import React from "react";
 import { Link, RouteComponentProps } from "react-router-dom";
 import { useAppSelector } from "../../app/hooks";
-import { Param } from "./postSlice";
+import { Param, selectPostByIdFunc } from "./postSlice";
 
 
 export const SinglePostPage = ({ match }: RouteComponentProps<Param>) => {
     const postId = match.params.postId
 
     const post = useAppSelector(
-        state => state.posts.find(p => p.id === postId)
+        state => selectPostByIdFunc(state, postId)
     )
 
     if (!post) {
